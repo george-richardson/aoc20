@@ -39,15 +39,25 @@ func ReadListOfStrings(year int, day int) (*[]string, error) {
 	return &r, nil
 }
 
+func ReadGridOfBytes(year int, day int) (*[][]byte, error) {
+	reader, err := GetInputReader(year, day)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get input as list of int: %w", err)
+	}
+	scanner := bufio.NewScanner(reader)
+	r := make([][]byte, 0, 10)
+	for scanner.Scan() {
+		r = append(r, []byte(scanner.Text()))
+	}
+	return &r, nil
+}
+
 func GetInputReader(year int, day int) (io.Reader, error) {
 	cookie, err := getSessionCookie()
 	if err != nil {
 		return nil, fmt.Errorf("unable to load aoc input: %w", err)
 	}
 	url := fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day)
-	if err != nil {
-		return nil, fmt.Errorf("unable to load aoc input: %w", err)
-	}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("unable to load aoc input: %w", err)
