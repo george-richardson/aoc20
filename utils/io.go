@@ -10,11 +10,10 @@ import (
 )
 
 func ReadListOfInts(year int, day int) (*[]int, error) {
-	reader, err := GetInputReader(year, day)
+	scanner, err := GetInputScanner(year, day)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get input as list of int: %w", err)
 	}
-	scanner := bufio.NewScanner(reader)
 	r := make([]int, 0, 10)
 	for scanner.Scan() {
 		i, err := strconv.Atoi(scanner.Text())
@@ -27,11 +26,10 @@ func ReadListOfInts(year int, day int) (*[]int, error) {
 }
 
 func ReadListOfStrings(year int, day int) (*[]string, error) {
-	reader, err := GetInputReader(year, day)
+	scanner, err := GetInputScanner(year, day)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get input as list of int: %w", err)
 	}
-	scanner := bufio.NewScanner(reader)
 	r := make([]string, 0, 10)
 	for scanner.Scan() {
 		r = append(r, scanner.Text())
@@ -40,16 +38,24 @@ func ReadListOfStrings(year int, day int) (*[]string, error) {
 }
 
 func ReadGridOfBytes(year int, day int) (*[][]byte, error) {
-	reader, err := GetInputReader(year, day)
+	scanner, err := GetInputScanner(year, day)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get input as list of int: %w", err)
 	}
-	scanner := bufio.NewScanner(reader)
 	r := make([][]byte, 0, 10)
 	for scanner.Scan() {
 		r = append(r, []byte(scanner.Text()))
 	}
 	return &r, nil
+}
+
+func GetInputScanner(year int, day int) (*bufio.Scanner, error) {
+	reader, err := GetInputReader(year, day)
+	if err != nil {
+		return nil, fmt.Errorf("unable to get get input scanner: %w", err)
+	}
+	scanner := bufio.NewScanner(reader)
+	return scanner, nil
 }
 
 func GetInputReader(year int, day int) (io.Reader, error) {
